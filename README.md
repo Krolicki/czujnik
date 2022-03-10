@@ -1,12 +1,12 @@
 Konfiguracja Raspberry Pi:
 
-Raspberry Pi 4b 2GB
+ Raspberry Pi 4b 2GB
 
 Czujnik ruchu HC-SR501:
 
- -zasilanie 5V - PIN 2 PWR
- -sygnał - GPIO 18 (PIN 12)
- -masa - PIN 14
+ - zasilanie 5V - PIN 2 PWR
+ - sygnał - GPIO 18 (PIN 12)
+ - masa - PIN 14
 
 
 Buzzer (bez generatora):
