@@ -13,7 +13,7 @@ GPIO.setup(czujnik,GPIO.IN)
 
 go = False
 iloscwejscdzis = 0
-pobranadata = False
+today = "NULL"
 
 app = Flask(__name__)
 
@@ -68,6 +68,7 @@ def wejsciadzis():
     data = datetime.now()
     teraz = data.strftime("%d-%m-%Y")
     global iloscwejscdzis
+    iloscwejscdzis = 0
     f = open("/home/czujnik/log/log.txt")
     #with list(open("/home/czujnik/log/log.txt")) as f:
     for line in reversed(list(f)):
@@ -77,6 +78,16 @@ def wejsciadzis():
         else:
             break
     f.close()
+    
+def check_date():
+    global today
+    date = datetime.now()
+    now = date.strftime("%d-%m-%Y")
+    if not (today == now):
+        today = now
+        return False
+    else:
+        return True
 
 def beep(repeat):
    for i in range(0, repeat):
@@ -106,10 +117,8 @@ def startczujnika(arg):
 def index():
     global go
     global iloscwejscdzis
-    global pobranadata
-    if not pobranadata:
+    if not check_date():
         wejsciadzis()
-        pobranadata = True
     dane = {
        'status' : go,
        'ilosc' : iloscwejscdzis,
@@ -121,9 +130,8 @@ def action(akcja):
     global go
     global iloscwejscdzis
     global pobranadata
-    if not pobranadata:
+    if not check_date():
         wejsciadzis()
-        pobranadata = True
     if (akcja == "on"):
         if (go==False):
           start()
