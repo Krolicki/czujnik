@@ -122,6 +122,7 @@ def index():
     dane = {
        'status' : go,
        'ilosc' : iloscwejscdzis,
+       'data' : today,
     }
     return render_template('main.html', **dane)
     
@@ -148,6 +149,7 @@ def action(akcja):
     dane = {
        'status' : go,
        'ilosc' : iloscwejscdzis,
+       'data' : today,
     }     
     return render_template('main.html', **dane)
 
