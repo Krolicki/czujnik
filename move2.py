@@ -14,6 +14,7 @@ GPIO.setup(czujnik,GPIO.IN)
 go = False
 iloscwejscdzis = 0
 today = "NULL"
+status = 0
 
 app = Flask(__name__)
 
@@ -93,9 +94,9 @@ def beep(repeat):
    for i in range(0, repeat):
       for pulse in range(60):
          GPIO.output(buzzer, True)
-         time.sleep(0.00047)
+         time.sleep(0.00046)
          GPIO.output(buzzer, False)
-         time.sleep(0.00047)
+         time.sleep(0.00046)
       time.sleep(0.02)
 
 def startczujnika(arg):
@@ -103,7 +104,8 @@ def startczujnika(arg):
     while True:
         n=GPIO.input(18)
         if n==1:
-            beep(3)
+            if (status == 1):
+                beep(3)
             savelog()
             iloscwejscdzis += 1
             time.sleep(1)
@@ -131,23 +133,32 @@ def action(akcja):
     global go
     global iloscwejscdzis
     global pobranadata
+    global status
     if not check_date():
         wejsciadzis()
     if (akcja == "on"):
         if (go==False):
-          start()
           go = True
+          status = 1
           x = threading.Thread(target=startczujnika, args=(0,))
-          x.start()  
+          x.start()
+          start()
     if (akcja == "off"):
         if (go==True):
           go = False
           time.sleep(0.25)
-          stop()
-          time.sleep(0.25)
-          
+          if(status == 1):
+              stop()
+              time.sleep(0.25)
+          status = 0
+    if (akcja == "silent"):
+        go = True
+        status = 2
+        x = threading.Thread(target=startczujnika, args=(0,))
+        x.start()
+        
     dane = {
-       'status' : go,
+       'status' : status,
        'ilosc' : iloscwejscdzis,
        'data' : today,
     }     

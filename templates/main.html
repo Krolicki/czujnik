@@ -22,7 +22,7 @@
 <body>
    <div class="container">
       <center>
-         <h1 class="display-4">Czujnik ruchu jest <big><b>{% if status == 0 %} nieaktywny {% else %} uzbrojony  {% endif %}</b></big></h1>
+         <h1 class="display-4">Czujnik ruchu jest <big><b>{% if status == 0 %} nieaktywny {% elif status == 1 %} uzbrojony {% else %} w trybie cichym {% endif %}</b></big></h1>
          <h1>
             {%if status == 0 %}
                <a href="/on" class="btn btn-lg btn-primary" role="button">Uzbrajanie</a>
@@ -31,7 +31,11 @@
             {% endif %} 
          </h1>
          <h5>
-            <a href="/" class="btn btn-secondary btn-lg" role="button">Tryb cichy</a>
+            {%if status == 2 %}
+               <a href="/" class="btn btn-secondary btn-lg disabled" role="button" >Tryb cichy</a>
+            {% else %}
+               <a href="/silent" class="btn btn-secondary btn-lg" role="button" >Tryb cichy</a>
+            {% endif %} 
          </h5>
          <h3 class="display-5"><small>Ilość wykryć  dziś: <b>{{ ilosc }}</b></small></h3>
          <h5 class=""><small>Stan na dzień: {{data}}</small></h5>
